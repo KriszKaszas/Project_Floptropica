@@ -2,13 +2,38 @@
 @using Project_Floptropica.Shared.Services
 @inject IFormFactor FormFactor
 
-<PageTitle>Home</PageTitle>
+<h1>Soundboard</h1>
 
-<h1>Hello, world!</h1>
-
-Welcome to your new app running on <em>@factor</em> using <em>@platform</em>.
+<div class="soundboard">
+    @foreach (var sound in Sounds)
+    {
+        <button @onclick="() => PlaySound(sound.FilePath)">@sound.Name</button>
+    }
+</div>
 
 @code {
-    private string factor => FormFactor.GetFormFactor();
-    private string platform => FormFactor.GetPlatform();
+    private List<Sound> Sounds = new()
+    {
+        new Sound("Clap", "sounds/clap.mp3"),
+        new Sound("Bell", "sounds/bell.mp3"),
+        new Sound("Whistle", "sounds/whistle.mp3")
+    };
+
+
+    private async Task PlaySound(string filePath)
+    {
+        
+    }
+
+    private class Sound
+    {
+        public string Name { get; set; }
+        public string FilePath { get; set; }
+
+        public Sound(string name, string filePath)
+        {
+            Name = name;
+            FilePath = filePath;
+        }
+    }
 }
