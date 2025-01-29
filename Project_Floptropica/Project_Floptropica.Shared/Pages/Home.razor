@@ -1,39 +1,32 @@
 ﻿@page "/"
 @using Project_Floptropica.Shared.Services
 @inject IFormFactor FormFactor
+@inject IJSRuntime JS
 
 <h1>Soundboard</h1>
 
 <div class="soundboard">
-    @foreach (var sound in Sounds)
+    @foreach (var sound in soundFiles)
     {
-        <button @onclick="() => PlaySound(sound.FilePath)">@sound.Name</button>
+        <button @onclick="() => PlayAudio(sound.File)">@sound.Name</button>
     }
 </div>
 
 @code {
-    private List<Sound> Sounds = new()
-    {
-        new Sound("Clap", "sounds/clap.mp3"),
-        new Sound("Bell", "sounds/bell.mp3"),
-        new Sound("Whistle", "sounds/whistle.mp3")
-    };
+    private List<SoundItem> soundFiles = new();
 
-
-    private async Task PlaySound(string filePath)
+    protected override async Task OnInitializedAsync()
     {
-        
+        soundFiles = await JS.InvokeAsync<List<SoundItem>>("getSoundFiles");
     }
 
-    private class Sound
+    private async Task PlayAudio(string fileName)
     {
-        public string Name { get; set; }
-        public string FilePath { get; set; }
-
-        public Sound(string name, string filePath)
-        {
-            Name = name;
-            FilePath = filePath;
-        }
+        await JS.InvokeVoidAsync("playAudio", fileName);
+    }
+    private class SoundItem
+    {
+        public string Name { get; set; } = "";
+        public string File { get; set; } = "";
     }
 }

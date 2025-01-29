@@ -6,6 +6,7 @@ body {
     padding: 0;
     text-align: center;
     overflow-x: hidden;
+    background-image:url("icons/OIP.jpeg")
 }
 
 h1 {
