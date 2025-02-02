@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace Project_Floptropica.Services
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Text.Json;
+    using System.Collections.Generic;
+
     public class SoundParser
     {
         private static readonly string[] AllowedExtensions = { ".mp3", ".ogg", ".wav" }; // Add more if needed
@@ -37,12 +43,12 @@ namespace Project_Floptropica.Services
                 }
             }
 
-            var newSounds = Directory.GetFiles(folderPath)
+            var newSounds = Directory.GetFiles(folderPath, "*.*", SearchOption.AllDirectories)
                 .Where(file => AllowedExtensions.Contains(Path.GetExtension(file).ToLower()))
                 .Select(file => new SoundItem
                 {
                     Name = Path.GetFileNameWithoutExtension(file),
-                    File = Path.GetFileName(file)
+                    File = Path.GetRelativePath(folderPath, file).Replace("\\", "/")
                 })
                 .Where(newSound => !existingSounds.Any(existing => existing.File == newSound.File))
                 .ToList();
@@ -71,4 +77,5 @@ namespace Project_Floptropica.Services
             public List<SoundItem> files { get; set; } = new();
         }
     }
+
 }
