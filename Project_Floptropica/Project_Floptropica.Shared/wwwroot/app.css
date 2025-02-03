@@ -6,7 +6,8 @@ body {
     padding: 0;
     text-align: center;
     overflow-x: hidden;
-    background-image:url("icons/OIP.jpeg")
+    background-image: url("icons/OIP.jpeg");
+    background-size: cover;
 }
 
 h1 {
@@ -15,6 +16,38 @@ h1 {
     text-shadow: 2px 2px #8b0000;
 }
 
+/* Category Selection */
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+.back-button {
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    background-color: #ff6347;
+    color: white;
+    border: 3px solid #8b0000;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px black;
+}
+
+    .back-button:hover {
+        background-color: #ff4500;
+        transform: scale(1.1);
+    }
+
+    .back-button:active {
+        background-color: #8b0000;
+    }
+
+/* Soundboard Styles */
 .soundboard {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -29,6 +62,7 @@ h1 {
 }
 
 button {
+    position: relative;
     padding: 15px;
     font-size: 1.2rem;
     font-weight: bold;
@@ -50,16 +84,32 @@ button {
         background-color: #ff6347;
     }
 
+/* Animated Flop Effect */
 @keyframes flop {
     0%, 100% {
-        transform: rotate(-5deg);
+        transform: rotate(-2deg);
     }
 
     50% {
-        transform: rotate(5deg);
+        transform: rotate(2deg);
     }
 }
 
 .soundboard:hover {
     animation: flop 0.5s infinite;
+}
+
+/* Pause Button Icon */
+.pause-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px; /* Bigger size */
+    color: rgba(255, 255, 0, 0.8); /* Yellow with slight transparency */
+    text-shadow: 2px 2px black;
+    background: rgba(0, 0, 0, 0.3); /* Slight dark background for visibility */
+    padding: 10px 15px;
+    border-radius: 10px;
 }
