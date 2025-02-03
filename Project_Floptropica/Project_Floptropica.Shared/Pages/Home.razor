@@ -5,25 +5,54 @@
 
 <h1>Soundboard</h1>
 
-<div class="soundboard">
-    @foreach (var sound in soundFiles)
-    {
-        <button @onclick="() => PlayAudio(sound.File)">@sound.Name</button>
-    }
-</div>
+@if (selectedCategory == null)
+{
+    <div class="category-list">
+        @foreach (var category in categories)
+        {
+            <button @onclick="() => SelectCategory(category)">@category</button>
+        }
+    </div>
+}
+else
+{
+    <button @onclick="BackToCategories">Back</button>
+    <h2>@selectedCategory</h2>
+    <div class="soundboard">
+        @foreach (var sound in soundFiles)
+        {
+            <button @onclick="() => PlayAudio(sound.File)">@sound.Name</button>
+        }
+    </div>
+}
 
 @code {
+    private List<string> categories = new();
     private List<SoundItem> soundFiles = new();
+    private string? selectedCategory = null;
 
     protected override async Task OnInitializedAsync()
     {
-        soundFiles = await JS.InvokeAsync<List<SoundItem>>("getSoundFiles");
+        categories = await JS.InvokeAsync<List<string>>("getSoundCategories");
+    }
+
+    private async Task SelectCategory(string category)
+    {
+        selectedCategory = category;
+        soundFiles = await JS.InvokeAsync<List<SoundItem>>("getSoundsInCategory", category);
+    }
+
+    private void BackToCategories()
+    {
+        selectedCategory = null;
+        soundFiles.Clear();
     }
 
     private async Task PlayAudio(string fileName)
     {
         await JS.InvokeVoidAsync("playAudio", fileName);
     }
+
     private class SoundItem
     {
         public string Name { get; set; } = "";
