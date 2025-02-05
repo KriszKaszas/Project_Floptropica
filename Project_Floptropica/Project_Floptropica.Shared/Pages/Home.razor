@@ -1,6 +1,5 @@
 ﻿@page "/"
 @using Project_Floptropica.Shared.Services
-@inject IFormFactor FormFactor
 @inject IJSRuntime JS
 
 <h1>Soundboard</h1>
@@ -18,14 +17,23 @@ else
 {
     <button class="back-button" @onclick="BackToCategories">← Back to Categories</button>
     <h2>@selectedCategory</h2>
+
+    <!-- Independent Pause Button -->
+    @if (playingSound != null)
+    {
+        <button class="pause-button" @onclick="TogglePause">
+            @(isPaused ? "▶ Resume" : "⏸ Pause")
+        </button>
+    }
+
     <div class="soundboard">
         @foreach (var sound in soundFiles)
         {
             <button class="sound-button" @onclick="() => ToggleAudio(sound.File, sound.Name)">
                 @sound.Name
-                @if (playingSound == sound.Name)
+                @if (playingSound == sound.Name && !isPaused)
                 {
-                    <span class="pause-icon">⏸</span>
+                    <span class="stop-icon">■</span> <!-- Stop icon when playing -->
                 }
             </button>
         }
@@ -62,14 +70,30 @@ else
     {
         if (playingSound == soundName)
         {
-            isPaused = !isPaused;
-            await JS.InvokeVoidAsync("toggleAudio");
+            if (isPaused)
+            {
+                await JS.InvokeVoidAsync("resumeAudio");
+                isPaused = false;
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("restartAudio");
+            }
         }
         else
         {
             playingSound = soundName;
             isPaused = false;
             await JS.InvokeVoidAsync("playAudioWithCallback", fileName, DotNetObjectReference.Create(this));
+        }
+    }
+
+    private async Task TogglePause()
+    {
+        if (playingSound != null)
+        {
+            isPaused = !isPaused;
+            await JS.InvokeVoidAsync("toggleAudio");
         }
     }
 
