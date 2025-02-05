@@ -16,12 +16,18 @@
 }
 else
 {
-    <button @onclick="BackToCategories">Back</button>
+    <button class="back-button" @onclick="BackToCategories">← Back to Categories</button>
     <h2>@selectedCategory</h2>
     <div class="soundboard">
         @foreach (var sound in soundFiles)
         {
-            <button @onclick="() => PlayAudio(sound.File)">@sound.Name</button>
+            <button class="sound-button" @onclick="() => ToggleAudio(sound.File, sound.Name)">
+                @sound.Name
+                @if (playingSound == sound.Name)
+                {
+                    <span class="pause-icon">⏸</span>
+                }
+            </button>
         }
     </div>
 }
@@ -30,6 +36,8 @@ else
     private List<string> categories = new();
     private List<SoundItem> soundFiles = new();
     private string? selectedCategory = null;
+    private string? playingSound = null;
+    private bool isPaused = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -46,11 +54,31 @@ else
     {
         selectedCategory = null;
         soundFiles.Clear();
+        playingSound = null;
+        isPaused = false;
     }
 
-    private async Task PlayAudio(string fileName)
+    private async Task ToggleAudio(string fileName, string soundName)
     {
-        await JS.InvokeVoidAsync("playAudio", fileName);
+        if (playingSound == soundName)
+        {
+            isPaused = !isPaused;
+            await JS.InvokeVoidAsync("toggleAudio");
+        }
+        else
+        {
+            playingSound = soundName;
+            isPaused = false;
+            await JS.InvokeVoidAsync("playAudioWithCallback", fileName, DotNetObjectReference.Create(this));
+        }
+    }
+
+    [JSInvokable]
+    public void OnAudioEnded()
+    {
+        playingSound = null;
+        isPaused = false;
+        StateHasChanged();
     }
 
     private class SoundItem
