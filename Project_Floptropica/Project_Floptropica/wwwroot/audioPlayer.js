@@ -44,15 +44,29 @@ window.restartAudio = () => {
     }
 };
 
-
-window.getSoundCategories = async () => {
-    const response = await fetch("sounds.json");
-    const data = await response.json();
-    return Object.keys(data.Categories);
+window.stopAudio = () => {
+    if (window.currentAudio) {
+        window.currentAudio.pause();
+        window.currentAudio.currentTime = 0; // Reset to the start
+        window.currentAudio = null; // Clear reference
+    }
 };
 
+window.getSoundCategories = async () => {
+    try {
+        const response = await fetch("/sounds.json");
+        if (!response.ok) throw new Error("Failed to load sounds.json");
+        const data = await response.json();
+        return Object.keys(data.Categories);
+    } catch (error) {
+        console.error("Error loading sound categories:", error);
+        return [];
+    }
+};
+
+
 window.getSoundsInCategory = async (category) => {
-    const response = await fetch("sounds.json");
+    const response = await fetch("/sounds.json");
     const data = await response.json();
     return data.Categories[category] || [];
 };

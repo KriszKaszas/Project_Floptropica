@@ -58,13 +58,19 @@ else
         soundFiles = await JS.InvokeAsync<List<SoundItem>>("getSoundsInCategory", category);
     }
 
-    private void BackToCategories()
+    private async Task BackToCategories()
     {
+        if (playingSound != null)
+        {
+            await JS.InvokeVoidAsync("stopAudio"); // Stop the sound
+        }
+
         selectedCategory = null;
         soundFiles.Clear();
         playingSound = null;
         isPaused = false;
     }
+
 
     private async Task ToggleAudio(string fileName, string soundName)
     {

@@ -61,6 +61,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\sounds.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Maui" Version="$(MauiVersion)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.0" />
@@ -69,5 +73,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Project_Floptropica.Shared\Project_Floptropica.Shared.csproj" />
   </ItemGroup>
+	<ItemGroup>
+		<MauiAsset Include="Resources/sounds.json" />
+		<MauiAsset Include="wwwroot\sounds.json" />
+	</ItemGroup>
 
 </Project>
