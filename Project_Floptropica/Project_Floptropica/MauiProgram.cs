@@ -25,7 +25,9 @@ namespace Project_Floptropica
             builder.Services.AddBlazorWebViewDeveloperTools();
             builder.Logging.AddDebug();
 #endif
-            SoundParser.GenerateSoundsJson("wwwroot/sounds", "wwwroot/sounds.json");
+            var outputPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "sounds.json");
+            SoundParser.GenerateSoundsJson("wwwroot/sounds", outputPath);
+
             return builder.Build();
         }
     }

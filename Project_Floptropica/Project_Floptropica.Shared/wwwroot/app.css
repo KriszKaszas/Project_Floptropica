@@ -63,8 +63,8 @@ h1 {
 
 button {
     position: relative;
-    padding: 15px;
-    font-size: 1.2rem;
+    padding: 10px;
+    font-size: 1.1rem;
     font-weight: bold;
     background-color: #ff7f50;
     color: white;
@@ -73,6 +73,43 @@ button {
     cursor: pointer;
     transition: all 0.3s ease;
     text-shadow: 1px 1px #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    white-space: normal;
+    word-wrap: break-word;
+    min-height: 60px;
+}
+
+.sound-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 60px; /* Ensures enough height */
+    max-width: 100%; /* Keeps button width flexible */
+    padding: 10px;
+    font-size: 1rem; /* Adjusted for better fit */
+    word-wrap: break-word; /* Ensures long words break */
+    white-space: normal; /* Allows multi-line text */
+    overflow: hidden; /* Prevents overflow */
+}
+
+    /* Ensure text wraps nicely inside */
+    .sound-button span {
+        display: block;
+        max-width: 90%; /* Keeps text inside */
+        word-break: break-word; /* Breaks words properly */
+        text-overflow: ellipsis; /* Adds "..." for very long text */
+        overflow: hidden;
+    }
+
+/* If you want text to shrink when it’s too long */
+.sound-button {
+    font-size: clamp(0.8rem, 3vw, 1.2rem);
 }
 
     button:hover {
@@ -99,17 +136,40 @@ button {
     animation: flop 0.5s infinite;
 }
 
-/* Pause Button Icon */
-.pause-icon {
+.stop-icon {
     position: absolute;
-    right: 10px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 40px; /* Bigger size */
-    color: rgba(255, 255, 0, 0.8); /* Yellow with slight transparency */
+    font-size: 40px;
+    color: rgba(255, 0, 0, 0.8); /* Red with transparency */
     text-shadow: 2px 2px black;
-    background: rgba(0, 0, 0, 0.3); /* Slight dark background for visibility */
+    background: rgba(0, 0, 0, 0.3);
     padding: 10px 15px;
     border-radius: 10px;
 }
+
+.pause-button {
+    position: fixed; /* Keep it fixed on the screen */
+    top: 20px; /* Distance from the top */
+    right: 20px; /* Distance from the right */
+    font-size: 1.5rem;
+    padding: 10px 20px;
+    background-color: #ffcc00;
+    color: black;
+    border: 3px solid #8b0000;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-shadow: 1px 1px black;
+    z-index: 1000; /* Ensure it's above everything */
+}
+
+    .pause-button:hover {
+        background-color: #ffaa00;
+        transform: scale(1.1);
+    }
+
+    .pause-button:active {
+        background-color: #cc8800;
+    }
